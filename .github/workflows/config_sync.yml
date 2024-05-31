@@ -1,0 +1,23 @@
+name: ♻️ Config Sync
+
+on:
+  push:
+    branches:
+      - main
+  schedule:
+    - cron: "*/5 * * * *"
+
+jobs:
+  file_sync:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Fetching Local Repository
+        uses: actions/checkout@main
+      - name: Config Sync
+        uses: kbrashears5/github-action-file-sync@v2.0.0
+        with:
+          REPOSITORIES: |
+            ${{ github.repository_owner }}/gha-test-repo@main
+          FILES: |
+            sync/release.yml=.github/release.yml
+          TOKEN: ${{ secrets.GITHUB_TOKEN }}
